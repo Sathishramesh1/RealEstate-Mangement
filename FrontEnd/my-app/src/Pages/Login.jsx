@@ -58,7 +58,8 @@ export default function Login() {
       const res = await handleLoginApi(formik.values);
       console.log(res,"from login");
       if (res && res.status === 200) {
-        dispatch(setLoggedIn(true));
+        
+        localStorage.setItem("x-auth-token",res.data.jwttoken);
         navigate("/"); 
 
       } else {

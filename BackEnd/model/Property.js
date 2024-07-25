@@ -13,6 +13,10 @@ const PropertySchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    imageurl:{
+        type:String,
+        required:true
+    },
     description: {
         type: String,
         required: true

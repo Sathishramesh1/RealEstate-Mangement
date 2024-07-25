@@ -6,8 +6,8 @@ export const createNewProperty=async(req,res)=>{
 
     try {
 
-        const { propertyType, location, price, description } = req.body;
-        const newProperty = new Property({ propertyType, location, price, description });
+        const { propertyType, location, price, description,imageurl } = req.body;
+        const newProperty = new Property({ propertyType, location, price, description,imageurl });
         await newProperty.save();
         res.status(201).json(newProperty);
         

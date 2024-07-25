@@ -28,8 +28,8 @@ dbconnection();
 
 
 //ROUTES
-app.use("/api/v1/user",UserRouter);
-app.use("/api/v1/property",isAuthorized,PropertyRouter);
+app.use("/api/user/v1",UserRouter);
+app.use("/api/property/v1",isAuthorized,PropertyRouter);
 
 const PORT=process.env.PORT;
 

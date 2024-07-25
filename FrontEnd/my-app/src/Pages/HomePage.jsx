@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../Components/Navbar'
 
 function HomePage() {
+const [data,setData]=useState([]);  
+
+
+
+
+
+  
   return (
     <>
     <Navbar>

@@ -5,7 +5,7 @@ import { Property } from "../model/Property.js";
 export const createNewProperty=async(req,res)=>{
 
     try {
-
+        
         const { propertyType, location, price, description,imageurl } = req.body;
         const newProperty = new Property({ propertyType, location, price, description,imageurl });
         await newProperty.save();
@@ -25,6 +25,7 @@ export const createNewProperty=async(req,res)=>{
 // Get all properties
 export const getAllProperties = async (req, res) => {
     try {
+        const user=req.user._id;
         const properties = await Property.find();
         res.status(200).json(properties);
     } catch (error) {

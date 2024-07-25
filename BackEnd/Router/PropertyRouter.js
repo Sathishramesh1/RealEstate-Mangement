@@ -9,13 +9,13 @@ router.post("/add", createNewProperty);
 
 
 // Route to get all properties
-router.get("/properties", getAllProperties);
+router.get("/getall", getAllProperties);
 
 // Route to update a property
-router.put("/properties/:id", updateProperty);
+router.put("/update/:id", updateProperty);
 
 // Route to delete a property
-router.delete("/properties/:id", deleteProperty);
+router.delete("/remove/:id", deleteProperty);
 
 
 export { router as PropertyRouter};

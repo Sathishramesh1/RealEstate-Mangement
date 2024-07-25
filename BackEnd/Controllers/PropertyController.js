@@ -26,7 +26,7 @@ export const createNewProperty=async(req,res)=>{
 export const getAllProperties = async (req, res) => {
     try {
         const user=req.user._id;
-        const properties = await Property.find();
+        const properties = await Property.find({postedBy:user});
         res.status(200).json(properties);
     } catch (error) {
         console.error(error);

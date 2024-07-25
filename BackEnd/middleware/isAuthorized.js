@@ -10,7 +10,7 @@ import jwt from 'jsonwebtoken'
 // custom middleware
 const isAuthorized = async (req,res,next) => {
     let token;
-    if (req.header) {
+    if (req.headers && req.headers['x-auth-token']) {
       try {
         token = await req.headers["x-auth-token"];
         const decode = jwt.verify(token, process.env.SECRET_KEY);

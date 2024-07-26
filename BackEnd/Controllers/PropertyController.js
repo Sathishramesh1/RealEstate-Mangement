@@ -5,9 +5,9 @@ import { Property } from "../model/Property.js";
 export const createNewProperty=async(req,res)=>{
 
     try {
-        
+        const user=req.user._id;
         const { propertyType, location, price, description,imageurl } = req.body;
-        const newProperty = new Property({ propertyType, location, price, description,imageurl });
+        const newProperty = new Property({ propertyType, location, price, description,imageurl ,postedBy:user});
         await newProperty.save();
         res.status(201).json(newProperty);
         

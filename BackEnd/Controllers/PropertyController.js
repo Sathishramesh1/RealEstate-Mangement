@@ -34,6 +34,27 @@ export const getAllProperties = async (req, res) => {
     }
 };
 
+
+
+
+// Get a properties
+export const getProperty = async (req, res) => {
+    try {
+        const user=req.user._id;
+        const id=req.params.id;
+        const property = await Property.findById(id);
+        if (!property) {
+            return res.status(404).json({ message: 'Property not found' });
+        }
+
+        res.json(property);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+};
+
+
 // Update property
 export const updateProperty = async (req, res) => {
     try {

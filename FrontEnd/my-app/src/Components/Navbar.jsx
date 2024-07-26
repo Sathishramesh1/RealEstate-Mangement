@@ -15,6 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import AddHomeIcon from '@mui/icons-material/AddHome';
+import AddBusinessIcon from '@mui/icons-material/AddBusiness';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -57,6 +60,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar({children}) {
+  const navigate=useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -72,6 +76,8 @@ export default function PrimarySearchAppBar({children}) {
   };
 
   const handleMenuClose = () => {
+    localStorage.removeItem("x-auth-token");
+    navigate("/");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
@@ -97,7 +103,7 @@ export default function PrimarySearchAppBar({children}) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -122,10 +128,10 @@ export default function PrimarySearchAppBar({children}) {
       <MenuItem>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-            <MailIcon />
+          <AddHomeIcon></AddHomeIcon>
           </Badge>
         </IconButton>
-        <p>Messages</p>
+        <p>Home</p>
       </MenuItem>
       <MenuItem>
         <IconButton
@@ -134,10 +140,10 @@ export default function PrimarySearchAppBar({children}) {
           color="inherit"
         >
           <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
+            <AddBusinessIcon/>
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Add New Property</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -149,7 +155,7 @@ export default function PrimarySearchAppBar({children}) {
         >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>Logout</p>
       </MenuItem>
     </Menu>
   );
@@ -173,7 +179,7 @@ export default function PrimarySearchAppBar({children}) {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            MUI
+            RealEstate Management
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -188,7 +194,7 @@ export default function PrimarySearchAppBar({children}) {
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
             <IconButton size="large" aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="error">
-                <MailIcon />
+                <AddHomeIcon/>
               </Badge>
             </IconButton>
             <IconButton
@@ -197,7 +203,7 @@ export default function PrimarySearchAppBar({children}) {
               color="inherit"
             >
               <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
+                <AddBusinessIcon/>
               </Badge>
             </IconButton>
             <IconButton

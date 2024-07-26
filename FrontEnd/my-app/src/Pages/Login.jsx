@@ -60,7 +60,7 @@ export default function Login() {
       if (res && res.status === 200) {
         
         localStorage.setItem("x-auth-token",res.data.jwttoken);
-        navigate("/"); 
+        navigate("/home"); 
 
       } else {
         

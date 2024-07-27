@@ -15,67 +15,45 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 
-
-
-
 const defaultTheme = createTheme();
 
-
-//valiadation schema
+// Validation schema
 const validationSchema = yup.object({
   name: yup
     .string('Enter your name')
-    // .name('Enter a valid name')
     .required('Name is required'),
-    email: yup
+  email: yup
     .string('Enter your email')
     .email('Enter a valid email')
     .required('Email is required'),
-
   password: yup
     .string('Enter your password')
     .min(8, 'Password should be of minimum 8 characters length')
     .required('Password is required'),
 });
 
-
-
-
-
-
 export default function Register() {
+  const navigate = useNavigate();
 
-
-  const Navigate=useNavigate();
-
-  const handleSubmit = () => {
-    
-    // console.log(formik.values);
-
-   const res= handleRegisterApi(formik.values);
-
-   Navigate("/");
-console.log(res);
-
-
+  const handleSubmit = async (values) => {
+    try {
+      await handleRegisterApi(values);
+      navigate("/"); // Redirect to home page after successful registration
+    } catch (error) {
+      console.error("Registration error:", error);
+      // Add user feedback or error handling here
+    }
   };
 
-
-  //formik validation
-const formik = useFormik({
-  initialValues: {
-    name: '',
-    email:'',
-    password: '',
-  },
-  validationSchema: validationSchema,
-  onSubmit: () => {
-     handleSubmit();
-     formik.resetForm();
-  },
-});
-
-  
+  const formik = useFormik({
+    initialValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: handleSubmit,
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -87,11 +65,10 @@ const formik = useFormik({
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            padding:"2rem",
-           backgroundColor:"#e4f1f5!important",
-          borderRadius:"1rem",
-          
-          boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            padding: "2rem",
+            backgroundColor: "#e4f1f5!important",
+            borderRadius: "1rem",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -102,10 +79,9 @@ const formik = useFormik({
           </Typography>
           <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} >
+              <Grid item xs={12}>
                 <TextField
-
-                 variant='outlined'
+                  variant='outlined'
                   autoComplete="name"
                   name="name"
                   required
@@ -116,15 +92,13 @@ const formik = useFormik({
                   value={formik.values.name}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                 error={formik.touched.name && Boolean(formik.errors.name)}
-                 helperText={formik.touched.name && formik.errors.name}
-                //  sx={{ bgcolor: 'background.paper' }} 
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
                 />
               </Grid>
-             
               <Grid item xs={12}>
                 <TextField
-                 variant='outlined'
+                  variant='outlined'
                   required
                   fullWidth
                   id="email"
@@ -140,7 +114,7 @@ const formik = useFormik({
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                 variant='outlined'
+                  variant='outlined'
                   required
                   fullWidth
                   name="password"

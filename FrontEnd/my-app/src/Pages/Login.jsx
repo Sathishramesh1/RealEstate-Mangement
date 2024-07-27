@@ -37,9 +37,10 @@ export default function Login() {
       const res = await handleLoginApi(values);
       console.log(res, "from login");
 
-      if (res && res.status === 200) {
+      if (res && res.status == 200) {
+        navigate("/home"); 
         localStorage.setItem("x-auth-token", res.data.jwttoken);
-        navigate("/home"); // Redirect to home page after successful login
+        
       } else {
         console.error("Login failed:", res.message || "Unknown error");
       }

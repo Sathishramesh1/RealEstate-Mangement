@@ -21,7 +21,7 @@ function App() {
         <BrowserRouter>
        <Routes>
 
-      <Route  exact path='/' element={<Login/>}/>
+      <Route   path='/' element={<Login/>}/>
       <Route path='/register' element={<Register/>}/>
       <Route path='/home' element={token?<HomePage/>:<Navigate to="/"/>}/>
       <Route path='/add' element={token?<AddPage/>:<Navigate to="/"/>}/>

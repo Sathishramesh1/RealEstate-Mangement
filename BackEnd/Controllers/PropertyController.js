@@ -75,6 +75,28 @@ export const updateProperty = async (req, res) => {
     }
 };
 
+
+export const statusUpdate = async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const property = await Property.findById(id);
+        if (!property) {
+            return res.status(404).send("Property not found");
+        }
+
+        property.status = status;
+        await property.save();
+
+        res.status(200).send("Property status updated successfully");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+};
+
+
 // Delete property
 export const deleteProperty = async (req, res) => {
     try {

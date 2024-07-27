@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -12,12 +12,10 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import AddHomeIcon from '@mui/icons-material/AddHome';
 import AddBusinessIcon from '@mui/icons-material/AddBusiness';
-import { Navigate, useNavigate } from 'react-router-dom';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -49,7 +47,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -59,10 +56,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar({children}) {
-  const navigate=useNavigate();
+export default function PrimarySearchAppBar({ children, onSearch }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [searchQuery, setSearchQuery] = useState(''); // State for search query
+
+  const navigate = useNavigate();
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -76,14 +75,25 @@ export default function PrimarySearchAppBar({children}) {
   };
 
   const handleMenuClose = () => {
-    localStorage.removeItem("x-auth-token");
-    navigate("/");
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("x-auth-token");
+    navigate("/");
+    handleMenuClose();
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    if (onSearch) {
+      onSearch(event.target.value); // Trigger the search callback
+    }
   };
 
   const menuId = 'primary-search-account-menu';
@@ -103,7 +113,7 @@ export default function PrimarySearchAppBar({children}) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem onClick={handleLogout}>Logout</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
     </Menu>
   );
@@ -125,22 +135,22 @@ export default function PrimarySearchAppBar({children}) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={() => navigate('/home')}>
         <IconButton size="large" aria-label="show 4 new mails" color="inherit">
           <Badge badgeContent={4} color="error">
-          <AddHomeIcon></AddHomeIcon>
+            <AddHomeIcon />
           </Badge>
         </IconButton>
         <p>Home</p>
       </MenuItem>
-      <MenuItem>
+      <MenuItem onClick={() => navigate('/add')}>
         <IconButton
           size="large"
           aria-label="show 17 new notifications"
           color="inherit"
         >
           <Badge badgeContent={17} color="error">
-            <AddBusinessIcon/>
+            <AddBusinessIcon />
           </Badge>
         </IconButton>
         <p>Add New Property</p>
@@ -155,7 +165,7 @@ export default function PrimarySearchAppBar({children}) {
         >
           <AccountCircle />
         </IconButton>
-        <p>Logout</p>
+        <p>Profile</p>
       </MenuItem>
     </Menu>
   );
@@ -188,22 +198,25 @@ export default function PrimarySearchAppBar({children}) {
             <StyledInputBase
               placeholder="Search…"
               inputProps={{ 'aria-label': 'search' }}
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+            <IconButton size="large" aria-label="show 4 new mails" color="inherit" onClick={() => navigate('/home')}>
               <Badge badgeContent={4} color="error">
-                <AddHomeIcon/>
+                <AddHomeIcon />
               </Badge>
             </IconButton>
             <IconButton
               size="large"
               aria-label="show 17 new notifications"
               color="inherit"
+              onClick={() => navigate('/add')}
             >
               <Badge badgeContent={17} color="error">
-                <AddBusinessIcon/>
+                <AddBusinessIcon />
               </Badge>
             </IconButton>
             <IconButton
@@ -231,7 +244,6 @@ export default function PrimarySearchAppBar({children}) {
             </IconButton>
           </Box>
         </Toolbar>
-       
       </AppBar>
       {renderMobileMenu}
       {renderMenu}

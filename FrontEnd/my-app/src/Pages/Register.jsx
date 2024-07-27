@@ -54,8 +54,8 @@ export default function Register() {
 
    const res= handleRegisterApi(formik.values);
 
-   Navigate("/login");
-// console.log(res);
+   Navigate("/");
+console.log(res);
 
 
   };

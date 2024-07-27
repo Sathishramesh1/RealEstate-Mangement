@@ -12,6 +12,7 @@ import AddPage from './Pages/AddPage'
 function App() {
  
   const token =localStorage.getItem("x-auth-token");
+  console.log(token,"from th app page");
 
   return (
     <>

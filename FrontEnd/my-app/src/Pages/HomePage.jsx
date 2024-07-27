@@ -1,58 +1,55 @@
-import React, { useEffect, useState } from 'react'
-import Navbar from '../Components/Navbar'
-import Card from '../Components/Card'
+import React, { useState, useEffect } from 'react';
+import PrimarySearchAppBar from '../Components/Navbar';
+import Card from '../Components/Card';
 import { handleGetPropertiesApi } from '../utilities/globalApi';
-import { useNavigate } from 'react-router-dom';
 
 function HomePage() {
-const [data,setData]=useState([]);  
-const navigate=useNavigate();
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
-useEffect(()=>{
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem('x-auth-token');
+      const response = await handleGetPropertiesApi(token);
+      setData(response.data);
+      setFilteredData(response.data);
+    } catch (error) {
+      console.error("Error fetching properties:", error);
+    }
+  };
 
-const fetchData=async()=>{
-try {
-  const token =localStorage.getItem('x-auth-token');
-  console.log(token, "token")
-  const data=await handleGetPropertiesApi(token);
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  console.log(data,"properties data from homepage");
-  setData(data.data);
+  const handleSearch = (query) => {
+    if (query) {
+      const lowercasedQuery = query.toLowerCase();
+      const filtered = data.filter(item =>
+        item.propertyType.toLowerCase().includes(lowercasedQuery) ||
+        item.description.toLowerCase().includes(lowercasedQuery)
+      );
+      setFilteredData(filtered);
+    } else {
+      setFilteredData(data);
+    }
+  };
 
-  
-} catch (error) {
-  console.log(error,"error in fetching");
-  
-}
+  const handleUpdate = async () => {
+    await fetchData(); // Fetch updated data
+  };
 
-}
-fetchData();
-
-},[data.length])
-
-
-
-
-
-
-  
   return (
-    <>
-    <Navbar>
-      <div className='home_page_container'>
-
-      {data.length>0 &&data.map((ele)=>{
-        return <Card key={ele._id} details={ele} />
-      })}
-       
-  
-      </div>
-
-        
-    </Navbar>
-
-    </>
-  )
+    <div>
+      <PrimarySearchAppBar onSearch={handleSearch}>
+        <div className='home_page_container'>
+          {filteredData.map(item => (
+            <Card key={item._id} details={item} onUpdate={handleUpdate} />
+          ))}
+        </div>
+      </PrimarySearchAppBar>
+    </div>
+  );
 }
 
-export default HomePage
+export default HomePage;

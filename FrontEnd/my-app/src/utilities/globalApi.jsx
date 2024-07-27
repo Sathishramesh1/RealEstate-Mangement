@@ -129,6 +129,26 @@ export const handleEditApi = async (user, token, id) => {
 
 
 
+export const handleStatusUpdateApi = async (token, id) => {
+    try {
+        const response = await axios.put(
+            `${baseUrl}/api/property/v1/status/${id}`,
+            {},
+            {
+                headers: {
+                    'x-auth-token': token,
+                    'Content-Type': 'application/json' 
+                }
+            }
+        );
+        
+        console.log("Status update success:", response.data);
+        return response;
+    } catch (error) {
+        console.error("Unable to update status:", error);
+    }
+};
+
 export const handleAddApi = async (user, token) => {
     try {
         const response = await axios.post(
